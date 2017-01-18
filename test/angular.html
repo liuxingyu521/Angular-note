@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp" ng-controller="scopeRoot">
+
+<head>
+</head>
+
+<body>
+    <div>
+        <label>姓名:</label>
+        <input type="text" ng-model="yourName" placeholder="请输入你的姓名">
+        <hr>
+        <h1>你好 {{yourName}}!</h1>
+    </div>
+    <div ng-controller="scope">
+        <ul>
+            <li ng-repeat="person in persons">{{person}}</li>
+        </ul>
+    </div>
+    <script src="../lib/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.controller('scope',function ($scope,$rootScope) {
+            $scope.persons = ['Aney','Bob','Smith'];
+            $rootScope.yourName = 'jiajia';
+            console.log($rootScope);
+        });
+        app.controller('scopeRoot',function ($scope) {
+            
+        });
+    </script>
+</body>
+
+</html>

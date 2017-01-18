@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>angular 依赖注入</title>
+	<script src="../lib/angular.js"></script>
+</head>
+<body>
+	<div ng-app="myApp" ng-controller="myCon">
+		<input type="number" ng-model="num">
+		<button ng-click="square()">计算平方</button>
+		<p>结果为：{{result}}</p>
+	</div>
+	<script>
+		var app = angular.module('myApp',[]);
+
+		 // app.config(function($provide) {
+		 //    $provide.provider('MathService', function() {
+		 //       this.$get = function() {
+		 //          var factory = {};
+		          
+		 //          factory.multiply = function(a, b) {
+		 //             return a * b;
+		 //          }
+		 //          return factory;
+		 //       };
+		 //    });
+		 // });
+		
+		// 创建factory ‘MathService’服务
+		app.factory('MathService',function () {
+			var factory = {};
+			factory.multiply = function(x,y){
+				return x * y;
+			}
+
+			return factory;
+		});
+		// 在 service 中注入 factory 'MathService'
+		app.service('CalcService',function(MathService){
+			this.square = function (a) {
+				return MathService.multiply(a,a);
+			}
+		});
+		// value 值写入
+		app.value("defaultInput",3);
+		// 将 "defaultInput" 注入到控制器
+		app.controller('myCon', function($scope, CalcService, defaultInput) {
+		   $scope.num = defaultInput;
+		   $scope.result = CalcService.square($scope.num);
+		   
+		   $scope.square = function() {
+		      $scope.result = CalcService.square($scope.num);
+		   }
+		});
+	</script>
+</body>
+</html>
